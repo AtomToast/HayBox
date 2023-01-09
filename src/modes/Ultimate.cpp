@@ -16,6 +16,9 @@ Ultimate::Ultimate(socd::SocdType socd_type) : ControllerMode(socd_type) {
 }
 
 void Ultimate::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
+    bool mod_x_pressed = inputs.mod_x || inputs.mod_x1;
+    bool mod_y_pressed = inputs.mod_y || inputs.mod_y1;
+
     outputs.a = inputs.a;
     outputs.b = inputs.b;
     outputs.x = inputs.x;
@@ -28,7 +31,7 @@ void Ultimate::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
     outputs.home = inputs.home;
 
     // Turn on D-Pad layer by holding Mod X + Mod Y or Nunchuk C button.
-    if ((inputs.mod_x && inputs.mod_y) || inputs.nunchuk_c) {
+    if ((mod_x_pressed && mod_y_pressed) || inputs.nunchuk_c) {
         outputs.dpadUp = inputs.c_up;
         outputs.dpadDown = inputs.c_down;
         outputs.dpadLeft = inputs.c_left;
@@ -54,8 +57,10 @@ void Ultimate::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
     );
 
     bool shield_button_pressed = inputs.l || inputs.r || inputs.lightshield || inputs.midshield;
+    bool mod_x_pressed = inputs.mod_x || inputs.mod_x1;
+    bool mod_y_pressed = inputs.mod_y || inputs.mod_y1;
 
-    if (inputs.mod_x) {
+    if (mod_x_pressed) {
         // MX + Horizontal = 6625 = 53
         if (directions.horizontal) {
             outputs.leftStickX = 128 + (directions.x * 53);
@@ -154,7 +159,7 @@ void Ultimate::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
         }
     }
 
-    if (inputs.mod_y) {
+    if (mod_y_pressed) {
         // MY + Horizontal (even if shield is held) = 41
         if (directions.horizontal) {
             outputs.leftStickX = 128 + (directions.x * 41);
@@ -265,7 +270,7 @@ void Ultimate::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
     }
 
     // Shut off C-stick when using D-Pad layer.
-    if ((inputs.mod_x && inputs.mod_y) || inputs.nunchuk_c) {
+    if ((mod_x_pressed && mod_y_pressed) || inputs.nunchuk_c) {
         outputs.rightStickX = 128;
         outputs.rightStickY = 128;
     }
@@ -275,4 +280,4 @@ void Ultimate::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
         outputs.leftStickX = inputs.nunchuk_x;
         outputs.leftStickY = inputs.nunchuk_y;
     }
-}
+}

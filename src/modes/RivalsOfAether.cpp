@@ -15,6 +15,9 @@ RivalsOfAether::RivalsOfAether(socd::SocdType socd_type) : ControllerMode(socd_t
 }
 
 void RivalsOfAether::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
+    bool mod_x_pressed = inputs.mod_x || inputs.mod_x1;
+    bool mod_y_pressed = inputs.mod_y || inputs.mod_y1;
+
     outputs.a = inputs.a;
     outputs.b = inputs.b;
     outputs.x = inputs.x;
@@ -37,7 +40,7 @@ void RivalsOfAether::UpdateDigitalOutputs(InputState &inputs, OutputState &outpu
     outputs.rightStickClick = inputs.midshield;
 
     // Activate D-Pad layer by holding Mod X + Mod Y.
-    if (inputs.mod_x && inputs.mod_y) {
+    if (mod_x_pressed && mod_y_pressed) {
         outputs.dpadUp = inputs.c_up;
         outputs.dpadDown = inputs.c_down;
         outputs.dpadLeft = inputs.c_left;
@@ -63,11 +66,13 @@ void RivalsOfAether::UpdateAnalogOutputs(InputState &inputs, OutputState &output
     );
 
     bool shield_button_pressed = inputs.l || inputs.r;
+    bool mod_x_pressed = inputs.mod_x || inputs.mod_x1;
+    bool mod_y_pressed = inputs.mod_y || inputs.mod_y1;
 
 
     // 48 total DI angles, 24 total Up b angles, 16 total airdodge angles
 
-    if (inputs.mod_x) {
+    if (mod_x_pressed) {
         if (directions.horizontal) {
             outputs.leftStickX = 128 + (directions.x * 66);
         }
@@ -92,12 +97,12 @@ void RivalsOfAether::UpdateAnalogOutputs(InputState &inputs, OutputState &output
                 outputs.leftStickX = 128 + (directions.x * 52);
                 outputs.leftStickY = 128 + (directions.y * 31);
             }
-      
+
             if (inputs.c_up) {
                 outputs.leftStickX = 128 + (directions.x * 49);
                 outputs.leftStickY = 128 + (directions.y * 35);
             }
-     
+
             if (inputs.c_right) {
                 outputs.leftStickX = 128 + (directions.x * 51);
                 outputs.leftStickY = 128 + (directions.y * 43);
@@ -105,7 +110,7 @@ void RivalsOfAether::UpdateAnalogOutputs(InputState &inputs, OutputState &output
         }
     }
 
-    if (inputs.mod_y) {
+    if (mod_y_pressed) {
         if (directions.horizontal) {
             outputs.leftStickX = 128 + (directions.x * 44);
         }
@@ -130,12 +135,12 @@ void RivalsOfAether::UpdateAnalogOutputs(InputState &inputs, OutputState &output
                 outputs.leftStickX = 128 + (directions.x * 44);
                 outputs.leftStickY = 128 + (directions.y * 90);
             }
-      
+
             if (inputs.c_up) {
                 outputs.leftStickX = 128 + (directions.x * 45);
                 outputs.leftStickY = 128 + (directions.y * 63);
             }
-     
+
             if (inputs.c_right) {
                 outputs.leftStickX = 128 + (directions.x * 47);
                 outputs.leftStickY = 128 + (directions.y * 57);
@@ -144,7 +149,7 @@ void RivalsOfAether::UpdateAnalogOutputs(InputState &inputs, OutputState &output
     }
 
     // Shut off C-stick when using D-Pad layer.
-    if (inputs.mod_x && inputs.mod_y) {
+    if (mod_x_pressed && mod_y_pressed) {
         outputs.rightStickX = 128;
         outputs.rightStickY = 128;
     }
