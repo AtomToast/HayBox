@@ -114,6 +114,10 @@ void setup() {
             backends = new CommunicationBackend *[backend_count] {
                 primary_backend, new B0XXInputViewer(input_sources, input_source_count)
             };
+
+            // Default to Rivals of Aether mode on PC.
+            primary_backend->SetGameMode(new RivalsOfAether(socd::SOCD_2IP));
+            return;
         }
     } else {
         if (console == ConnectedConsole::GAMECUBE) {
@@ -128,9 +132,9 @@ void setup() {
         backends = new CommunicationBackend *[backend_count] { primary_backend };
     }
 
-    // Default to Melee mode.
+    // Default to Ultimate mode.
     primary_backend->SetGameMode(
-        new Melee20Button(socd::SOCD_2IP_NO_REAC, { .crouch_walk_os = false })
+        new Ultimate(socd::SOCD_2IP)
     );
 }
 
