@@ -26,9 +26,16 @@ void Ultimate::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
     outputs.buttonR = inputs.z;
     outputs.triggerLDigital = inputs.l;
     outputs.triggerRDigital = inputs.r;
-    outputs.start = inputs.start;
     outputs.select = inputs.select;
     outputs.home = inputs.home;
+
+    if (mod_x_pressed){
+        outputs.home = inputs.start;
+    } else if (mod_y_pressed){
+        outputs.select = inputs.start;
+    } else {
+        outputs.start = inputs.start;
+    }
 
     // Turn on D-Pad layer by holding Mod X + Mod Y or Nunchuk C button.
     if ((mod_x_pressed && mod_y_pressed) || inputs.nunchuk_c) {
