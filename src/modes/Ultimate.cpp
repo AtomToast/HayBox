@@ -43,6 +43,11 @@ void Ultimate::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
         outputs.dpadDown = inputs.c_down;
         outputs.dpadLeft = inputs.c_left;
         outputs.dpadRight = inputs.c_right;
+
+        if (inputs.z) {
+            outputs.buttonL = true;
+            outputs.a = true;
+        }
     }
 }
 
